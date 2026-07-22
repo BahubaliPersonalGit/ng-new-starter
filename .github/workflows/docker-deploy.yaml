@@ -30,19 +30,10 @@ jobs:
         run: npm install
 
       - name: Run tests
-        run: npm test -- --no-watch --coverage
+        run: npm test -- --no-watch
 
       - name: Build application
         run: npm run build
-
-      - name: Upload test coverage
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: angular-test-coverage
-          path: coverage/
-          if-no-files-found: ignore
-          retention-days: 10
 
   build_and_push:
     name: Build and Push Docker Image
@@ -74,7 +65,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=sha,format=long
-            type=raw,pattern=latest
+            type=raw,value=latest
 
       - name: Build and push Docker image
         id: push-step
