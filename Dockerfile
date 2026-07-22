@@ -1,6 +1,6 @@
 
 #build stage
-FROM node:20-alpine AS build
+FROM node:22-alpine AS build
 LABEL author="Bahubali"
 
 WORKDIR /app

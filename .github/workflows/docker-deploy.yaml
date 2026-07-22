@@ -7,7 +7,6 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{github.repository}}
-  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
 
 jobs:
   build_test:
@@ -32,6 +31,18 @@ jobs:
 
       - name: Run tests
         run: npm test -- --no-watch --coverage
+
+      - name: Build application
+        run: npm run build
+
+      - name: Upload test coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: angular-test-coverage
+          path: coverage/
+          if-no-files-found: ignore
+          retention-days: 10
 
   build_and_push:
     name: Build and Push Docker Image
